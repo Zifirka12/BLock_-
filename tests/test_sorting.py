@@ -1,40 +1,39 @@
-from typing import Any
-
-import pytest
-
 from sorting import Category, Product
 
 
-@pytest.fixture
-def category() -> Category:
-    return Category("Кирпичи", "завод в Чебоксарах")
+def test_product_creation() -> None:
+    product = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет", 180000.0, 5)
+    assert product.name == "Samsung Galaxy S23 Ultra"
+    assert product.description == "256GB, Серый цвет"
+    assert product.price == 180000.0
+    assert product.quantity == 5
 
 
-@pytest.fixture
-def product() -> Product:
-    return Product("Нокия", "Бедрок", 1111.11, 52)
+def test_price_setter_getter() -> None:
+    product = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
+    product.price = 200000.0
+    assert product.price == 200000.0
+    product.price = -100
+    assert product.price == 200000.0
 
 
-def test_product_init(product: Any) -> None:
-    assert product.name == "Нокия"
-    assert product.description == "Бедрок"
-    assert product.price == 1111.11
-    assert product.quantity == 52
-
-
-def test_category_init(category: Category) -> None:
-    assert category.name == "Кирпичи"
-    assert category.description == "завод в Чебоксарах"
+def test_category_creation() -> None:
+    category = Category("Смартфоны", "Лучшие смартфоны 2023 года", [])
+    assert category.name == "Смартфоны"
+    assert category.description == "Лучшие смартфоны 2023 года"
     assert len(category.products) == 0
 
-    # new_category = Category("посудомойка", "приборы для посудомойки")
-    assert Category.category_count == 1
 
-
-def test_product_count_incr(category: Category, product: Product) -> None:
+def test_add_product_to_category() -> None:
+    category = Category("Смартфоны", "Лучшие смартфоны 2023 года", [])
+    product = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
     category.add_product(product)
-    assert Category.product_count == 1
+    assert len(category.products) == 1
+    assert category.products[0] == "Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт."
 
-    another_product = Product("Ноут", "Игровой ноут", 1765.99, 30)
-    category.add_product(another_product)
-    assert Category.product_count == 2
+
+if __name__ == "__main__":
+    test_product_creation()
+    test_price_setter_getter()
+    test_category_creation()
+    test_add_product_to_category()
