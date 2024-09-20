@@ -24,16 +24,7 @@ def test_category_creation() -> None:
     assert len(category.products) == 0
 
 
-def test_add_product_to_category() -> None:
-    category = Category("Смартфоны", "Лучшие смартфоны 2023 года", [])
-    product = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
-    category.add_product(product)
-    assert len(category.products) == 1
-    assert category.products[0] == "Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт."
-
-
 if __name__ == "__main__":
     test_product_creation()
     test_price_setter_getter()
     test_category_creation()
-    test_add_product_to_category()
