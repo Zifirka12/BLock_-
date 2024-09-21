@@ -5,19 +5,19 @@ class Product:
     def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
         self.name = name
         self.description = description
-        self.__price = price
+        self.price = price
         self.quantity = quantity
 
     @property
     def price(self) -> float:
-        return self.__price
+        return self._price
 
     @price.setter
     def price(self, value: float) -> None:
         if value <= 0:
             print("Цена не должна быть нулевая или отрицательная")
         else:
-            self.__price = value
+            self._price = value
 
     @classmethod
     def new_product(cls, product_info: dict) -> "Product":
@@ -31,15 +31,15 @@ class Category:
     def __init__(self, name: str, description: str, products: list[Any]) -> None:
         self.name = name
         self.description = description
-        self.__products = products if products else []
+        self._products = products or []
         Category.category_count += 1
-        Category.product_count += len(self.__products)
+        Category.product_count += len(self._products)
 
     def add_product(self, product: Product) -> None:
-        self.__products.append(product)
+        self._products.append(product)
         Category.product_count += 1
 
     @property
     def products(self) -> str:
-        return ", ".join(
-            [f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт." for product in self.__products])
+        return "\n".join([f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт."
+                          for product in self._products])
