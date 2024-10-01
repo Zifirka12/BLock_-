@@ -26,7 +26,9 @@ class Product:
     def __str__(self):
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
-    def __add__(self, other):
+    def add(self, other):
+        if type(self) is not type(other):
+            raise TypeError("Нельзя складывать товары разных категорий!")
         return self.price * self.quantity + other.price * other.quantity
 
 
@@ -34,7 +36,7 @@ class Category:
     category_count = 0
     product_count = 0
 
-    def __init__(self, name: str, description: str, products: list[Any]) -> None:
+    def __init__(self, name: str, description: str, products: list[Any] = None) -> None:
         self.name = name
         self.description = description
         self._products = products or []
@@ -42,6 +44,8 @@ class Category:
         Category.product_count += len(self._products)
 
     def add_product(self, product: Product) -> None:
+        if not isinstance(product, Product):
+            raise TypeError("Можно добавлять только объекты типа Product или его наследников!")
         self._products.append(product)
         Category.product_count += 1
 
@@ -57,29 +61,19 @@ class Category:
         return f"{self.name}, количество продуктов: {total_items} шт."
 
 
-class ProductList:
-    def __init__(self, *args):
-        self.products = args
+class Smartphone(Product):
+    def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
 
-    def add_product(self, name, price):
-        self.products = (*self.products, (name, price))
 
-    def get_total_cost(self):
-        return sum(price * quantity for _, price, quantity in self.products)
+class LawnGrass(Product):
+    def __init__(self, name, description, price, quantity, country, germination_period, color):
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
 
-    def display_summary(self):
-        items = [(name, price) for name, price, _ in self.products]
-        return ", ".join(f"{name}: {price}" for name, price in items)
-
-    def __add__(self, other):
-        combined_list = ProductList(*self.products, *other.products)
-        return combined_list
-
-    def __repr__(self):
-        return f"Products({self.display_summary()})"
-
-    def __len__(self):
-        return len(self.products)
-
-    def __iter__(self):
-        return iter(self.products)
