@@ -1,39 +1,51 @@
-from sorting import Category, Product
+import pytest
+
+from sorting import Category, LawnGrass, Product, Smartphone
 
 
-def test_product_creation() -> None:
-    product = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет", 180000.0, 5)
-    assert product.name == "Samsung Galaxy S23 Ultra"
-    assert product.description == "256GB, Серый цвет"
-    assert product.price == 180000.0
-    assert product.quantity == 5
+@pytest.fixture()
+def product() -> Product:
+    return Product("ы", "ы", 1768.23, 101)  # долматинец
 
 
-def test_price_setter_getter() -> None:
-    product = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
-    product.price = 200000.0
-    assert product.price == 200000.0
-    product.price = -100
-    assert product.price == 200000.0
+@pytest.fixture()
+def smartphone() -> Smartphone:
+    return Smartphone("ы", "ы", 12345, 1, 100.1, "я", 69, "черный")
 
 
-def test_category_creation() -> None:
-    category = Category("Смартфоны", "Лучшие смартфоны 2023 года", [])
-    assert category.name == "Смартфоны"
-    assert category.description == "Лучшие смартфоны 2023 года"
-    assert len(category.products) == 0
+@pytest.fixture()
+def lawngrass() -> LawnGrass:
+    return LawnGrass("ы", "ы", 1488, 123, "я", "люблю", "себя")
 
 
-def test_add_product_to_category() -> None:
-    category = Category("Смартфоны", "Лучшие смартфоны 2023 года", [])
-    product = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
-    category.add_product(product)
-    assert len(category.products) == 1
-    assert category.products[0] == "Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт."
+@pytest.fixture()
+def category(product: Product) -> Category:
+    return Category("ы", "ы", [product])
 
 
-if __name__ == "__main__":
-    test_product_creation()
-    test_price_setter_getter()
-    test_category_creation()
-    test_add_product_to_category()
+def test_product(product: Product) -> None:
+    assert product.name == "ы"
+    assert product.description == "ы"
+    assert product.price == 1768.23
+    assert product.quantity == 101
+
+
+def test_smart(smartphone: Smartphone) -> None:
+    assert smartphone.name == "ы"
+    assert smartphone.description == "ы"
+    assert smartphone.price == 12345
+    assert smartphone.quantity == 1
+    assert smartphone.efficiency == 100.1
+    assert smartphone.model == "я"
+    assert smartphone.memory == 69
+    assert smartphone.color == "черный"
+
+
+def test_lawngrass(lawngrass: LawnGrass) -> None:
+    assert lawngrass.name == "ы"
+    assert lawngrass.description == "ы"
+    assert lawngrass.price == 1488
+    assert lawngrass.quantity == 123
+    assert lawngrass.country == "я"
+    assert lawngrass.germination_period == "люблю"
+    assert lawngrass.color == "себя"
