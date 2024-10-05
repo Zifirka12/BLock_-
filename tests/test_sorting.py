@@ -1,10 +1,11 @@
-from sorting import Category, Product, Smartphone, LawnGrass
 import pytest
+
+from sorting import Category, LawnGrass, Product, Smartphone
 
 
 @pytest.fixture()
 def product() -> Product:
-    return Product("ы", "ы", 1768.23, 101)#долматинец
+    return Product("ы", "ы", 1768.23, 101)  # долматинец
 
 
 @pytest.fixture()

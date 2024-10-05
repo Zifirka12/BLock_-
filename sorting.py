@@ -1,7 +1,26 @@
+from abc import ABC, abstractmethod
 from typing import Any
 
 
-class Product:
+class BaseProduct(ABC):
+    @abstractmethod
+    def __init__(self) -> None:
+        pass
+
+    @abstractmethod
+    def price(self) -> float:
+        pass
+
+
+class MixinLog:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        print(repr(self))
+
+    def __repr__(self) -> str:
+        return f"{self.name}: {self.description}, {self.price}, {self.quantity}"
+
+
+class Product(MixinLog, BaseProduct):
     def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
         self.name = name
         self.description = description
@@ -23,10 +42,10 @@ class Product:
     def new_product(cls, product_info: dict) -> "Product":
         return cls(product_info["name"], product_info["description"], product_info["price"], product_info["quantity"])
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
-    def add(self, other):
+    def add(self, other: Any) -> Any:
         if type(self) is not type(other):
             raise TypeError("Нельзя складывать товары разных категорий!")
         return self.price * self.quantity + other.price * other.quantity
@@ -36,7 +55,7 @@ class Category:
     category_count = 0
     product_count = 0
 
-    def __init__(self, name: str, description: str, products: list[Any] = None) -> None:
+    def __init__(self, name: str, description: str, products: list[Any]) -> None:
         self.name = name
         self.description = description
         self._products = products or []
@@ -56,13 +75,23 @@ class Category:
     def products(self) -> list:
         return self.get_products()
 
-    def __str__(self):
+    def __str__(self) -> str:
         total_items = sum(product.quantity for product in self._products)
         return f"{self.name}, количество продуктов: {total_items} шт."
 
 
 class Smartphone(Product):
-    def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        efficiency: Any,
+        model: Any,
+        memory: Any,
+        color: Any,
+    ) -> None:
         super().__init__(name, description, price, quantity)
         self.efficiency = efficiency
         self.model = model
@@ -71,9 +100,17 @@ class Smartphone(Product):
 
 
 class LawnGrass(Product):
-    def __init__(self, name, description, price, quantity, country, germination_period, color):
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        country: Any,
+        germination_period: Any,
+        color: Any,
+    ) -> None:
         super().__init__(name, description, price, quantity)
         self.country = country
         self.germination_period = germination_period
         self.color = color
-
