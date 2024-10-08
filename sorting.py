@@ -79,6 +79,18 @@ class Category:
         total_items = sum(product.quantity for product in self._products)
         return f"{self.name}, количество продуктов: {total_items} шт."
 
+    def average_price(self) -> float:
+        try:
+            total_price = sum(product.price for product in self._products)
+            count_products = len(self._products)
+
+            if count_products == 0:
+                return 0
+
+            return total_price / count_products
+        except ZeroDivisionError as e:
+            return 0
+
 
 class Smartphone(Product):
     def __init__(

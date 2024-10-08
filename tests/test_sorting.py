@@ -5,7 +5,7 @@ from sorting import Category, LawnGrass, Product, Smartphone
 
 @pytest.fixture()
 def product() -> Product:
-    return Product("ы", "ы", 1768.23, 101)  # долматинец
+    return Product("ы", "ы", 10101110101, 101)  # долматинец
 
 
 @pytest.fixture()
@@ -26,7 +26,7 @@ def category(product: Product) -> Category:
 def test_product(product: Product) -> None:
     assert product.name == "ы"
     assert product.description == "ы"
-    assert product.price == 1768.23
+    assert product.price == 10101110101
     assert product.quantity == 101
 
 
@@ -49,3 +49,7 @@ def test_lawngrass(lawngrass: LawnGrass) -> None:
     assert lawngrass.country == "я"
     assert lawngrass.germination_period == "люблю"
     assert lawngrass.color == "себя"
+
+
+def test_17_1(category: Category) -> None:
+    assert category.average_price() == 10101110101
